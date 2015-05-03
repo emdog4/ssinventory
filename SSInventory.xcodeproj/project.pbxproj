@@ -16,6 +16,8 @@
 		9C1059F91AF5CCA700223C26 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C1059F71AF5CCA700223C26 /* LaunchScreen.xib */; };
 		9C105A051AF5CCA700223C26 /* SSInventoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C105A041AF5CCA700223C26 /* SSInventoryTests.swift */; };
 		9C105A0F1AF5D04500223C26 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C105A0E1AF5D04500223C26 /* Item.swift */; };
+		9C105A131AF5E62600223C26 /* ItemModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C105A121AF5E62600223C26 /* ItemModalViewController.swift */; };
+		9C105A151AF5F42400223C26 /* Categories.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C105A141AF5F42400223C26 /* Categories.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +44,8 @@
 		9C105A031AF5CCA700223C26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C105A041AF5CCA700223C26 /* SSInventoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSInventoryTests.swift; sourceTree = "<group>"; };
 		9C105A0E1AF5D04500223C26 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Item.swift; path = ../Item.swift; sourceTree = "<group>"; };
+		9C105A121AF5E62600223C26 /* ItemModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemModalViewController.swift; sourceTree = "<group>"; };
+		9C105A141AF5F42400223C26 /* Categories.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Categories.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,12 +90,14 @@
 				9C1059E91AF5CCA700223C26 /* AppDelegate.swift */,
 				9C1059EE1AF5CCA700223C26 /* MasterViewController.swift */,
 				9C1059F01AF5CCA700223C26 /* DetailViewController.swift */,
+				9C105A121AF5E62600223C26 /* ItemModalViewController.swift */,
 				9C1059F21AF5CCA700223C26 /* Main.storyboard */,
 				9C1059F51AF5CCA700223C26 /* Images.xcassets */,
 				9C1059F71AF5CCA700223C26 /* LaunchScreen.xib */,
 				9C1059EB1AF5CCA700223C26 /* SSInventory.xcdatamodeld */,
 				9C105A0E1AF5D04500223C26 /* Item.swift */,
 				9C1059E71AF5CCA700223C26 /* Supporting Files */,
+				9C105A141AF5F42400223C26 /* Categories.plist */,
 			);
 			path = SSInventory;
 			sourceTree = "<group>";
@@ -202,6 +208,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C105A151AF5F42400223C26 /* Categories.plist in Resources */,
 				9C1059F41AF5CCA700223C26 /* Main.storyboard in Resources */,
 				9C1059F91AF5CCA700223C26 /* LaunchScreen.xib in Resources */,
 				9C1059F61AF5CCA700223C26 /* Images.xcassets in Resources */,
@@ -227,6 +234,7 @@
 				9C1059EA1AF5CCA700223C26 /* AppDelegate.swift in Sources */,
 				9C1059EF1AF5CCA700223C26 /* MasterViewController.swift in Sources */,
 				9C1059F11AF5CCA700223C26 /* DetailViewController.swift in Sources */,
+				9C105A131AF5E62600223C26 /* ItemModalViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

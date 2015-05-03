@@ -21,10 +21,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
         navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
         splitViewController.delegate = self
-
-        let masterNavigationController = splitViewController.viewControllers[0] as! UINavigationController
-        let controller = masterNavigationController.topViewController as! MasterViewController
-        controller.managedObjectContext = self.managedObjectContext
+        
+        let controllers = splitViewController.viewControllers
+        let detailViewController = controllers[controllers.count-1].topViewController as? DetailViewController
+        
+        detailViewController!.managedObjectContext = self.managedObjectContext
+        
         return true
     }
 
@@ -55,14 +57,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     // MARK: - Split view
 
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController:UIViewController!, ontoPrimaryViewController primaryViewController:UIViewController!) -> Bool {
-        if let secondaryAsNavController = secondaryViewController as? UINavigationController {
-            if let topAsDetailController = secondaryAsNavController.topViewController as? DetailViewController {
-                if topAsDetailController.detailItem == nil {
-                    // Return true to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
-                    return true
-                }
-            }
-        }
+//        if let secondaryAsNavController = secondaryViewController as? UINavigationController {
+//            if let topAsDetailController = secondaryAsNavController.topViewController as? DetailViewController {
+//                if topAsDetailController.detailItem == nil {
+//                    // Return true to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
+//                    return true
+//                }
+//            }
+//        }
         return false
     }
     // MARK: - Core Data stack
