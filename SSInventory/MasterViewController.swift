@@ -44,12 +44,16 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     func insertNewObject(sender: AnyObject) {
         let context = self.fetchedResultsController.managedObjectContext
         let entity = self.fetchedResultsController.fetchRequest.entity!
-        let newManagedObject = NSEntityDescription.insertNewObjectForEntityForName(entity.name!, inManagedObjectContext: context) as! NSManagedObject
+        let newManagedObject = NSEntityDescription.insertNewObjectForEntityForName(entity.name!, inManagedObjectContext: context) as! Item
              
         // If appropriate, configure the new managed object.
         // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
-        newManagedObject.setValue(NSDate(), forKey: "timeStamp")
-             
+        newManagedObject.category   = "LCD"
+        newManagedObject.make       = "Dell"
+        newManagedObject.model      = "P2715Q"
+        newManagedObject.note       = "27\" UHD 4K LCD"
+        newManagedObject.price      = 560.00
+        
         // Save the context.
         var error: NSError? = nil
         if !context.save(&error) {
@@ -65,7 +69,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow() {
-            let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
+                let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Item
                 let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
                 controller.detailItem = object
                 controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
@@ -99,7 +103,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             let context = self.fetchedResultsController.managedObjectContext
-            context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
+            context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! Item)
                 
             var error: NSError? = nil
             if !context.save(&error) {
@@ -112,8 +116,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     }
 
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-            let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
-        cell.textLabel!.text = object.valueForKey("timeStamp")!.description
+            let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Item
+        cell.textLabel!.text = object.category
     }
 
     // MARK: - Fetched results controller
@@ -132,8 +136,9 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         fetchRequest.fetchBatchSize = 20
         
         // Edit the sort key as appropriate.
-        let sortDescriptor = NSSortDescriptor(key: "timeStamp", ascending: false)
-        let sortDescriptors = [sortDescriptor]
+        let sortDescriptor = NSSortDescriptor(key: "category", ascending: false)
+        let secondSortDesc = NSSortDescriptor(key: "make", ascending: false)
+        let sortDescriptors = [sortDescriptor, secondSortDesc]
         
         fetchRequest.sortDescriptors = [sortDescriptor]
         
