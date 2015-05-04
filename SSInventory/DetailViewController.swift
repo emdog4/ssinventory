@@ -18,7 +18,7 @@ class DetailViewController: UITableViewController, NSFetchedResultsControllerDel
         super.awakeFromNib()
         
         if self.category == nil {
-            self.category = "Category"
+            self.category = "Inventory"
         }
         
         if self.managedObjectContext == nil {
@@ -31,7 +31,7 @@ class DetailViewController: UITableViewController, NSFetchedResultsControllerDel
         
         self.title = self.category!
         
-        self.navigationItem.leftBarButtonItem = self.editButtonItem()
+        self.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "captureInputModally:")
     }
@@ -117,7 +117,7 @@ class DetailViewController: UITableViewController, NSFetchedResultsControllerDel
         
         // Edit the section name key path and cache name if appropriate.
         // nil for section name key path means "no sections".
-        let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: "Master")
+        let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: self.category)
         aFetchedResultsController.delegate = self
         _fetchedResultsController = aFetchedResultsController
         
@@ -168,6 +168,7 @@ class DetailViewController: UITableViewController, NSFetchedResultsControllerDel
     }
     
     func shouldDismissModalViewController(controller: ItemModalViewController) {
+        self.tableView.reloadData()
         controller.dismissViewControllerAnimated(true, completion: nil)
     }
 

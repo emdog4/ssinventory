@@ -8,5 +8,8 @@
 	<string>Cords</string>
 	<string>PSU / Heatsink</string>
 	<string>Retail</string>
+	<string>Business Item</string>
+	<string>Unpriced</string>
+	<string>Other</string>
 </array>
 </plist>

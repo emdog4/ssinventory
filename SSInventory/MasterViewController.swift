@@ -23,15 +23,7 @@ class MasterViewController: UITableViewController {
 
         self.title = "Categories"
         
-        self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        
-        reloadDatasourceFromFile()
-    }
-    
-    func reloadDatasourceFromFile() {
-        let path = NSBundle.mainBundle().pathForResource("Categories", ofType: "plist")
-        
-        self.categoryDatasource = NSArray(contentsOfFile: path!) as? Array<String>
+        self.categoryDatasource = (UIApplication.sharedApplication().delegate as! AppDelegate).categories
     }
     
     override func didReceiveMemoryWarning() {
@@ -46,9 +38,9 @@ class MasterViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-            case CategorySections.Categories.rawValue:  return 6
-            case CategorySections.Settings.rawValue:    return 2
-            default:                                    return 0
+        case CategorySections.Categories.rawValue:  return 9
+        case CategorySections.Settings.rawValue:    return 2
+        default:                                    return 0
         }
     }
     
@@ -61,6 +53,27 @@ class MasterViewController: UITableViewController {
         default: break
         }
         return cell
+    }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        switch indexPath.section {
+        case CategorySections.Categories.rawValue:  return true
+        default:                                    return false
+        }
+    }
+    
+    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        switch indexPath.section {
+        case CategorySections.Categories.rawValue:  return true
+        default:                                    return false
+        }
+    }
+    
+    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        switch indexPath.section {
+        case CategorySections.Categories.rawValue:  return .Delete
+        default:                                    return .None
+        }
     }
     
     // MARK: - Segues

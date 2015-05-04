@@ -13,7 +13,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
     var window: UIWindow?
-
+    var categories : Array<String>?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -27,7 +27,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         detailViewController!.managedObjectContext = self.managedObjectContext
         
+        reloadDatasourceFromFile()
+        
         return true
+    }
+    
+    func reloadDatasourceFromFile() {
+        
+        let path = NSBundle.mainBundle().pathForResource("Categories", ofType: "plist")
+        
+        self.categories = NSArray(contentsOfFile: path!) as? Array<String>
     }
 
     func applicationWillResignActive(application: UIApplication) {

@@ -9,15 +9,23 @@
 import UIKit
 import CoreData
 
-class ItemModalViewController: UIViewController {
+class ItemModalViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
     var category : String?
     var delegate : DetailViewController?
+    
+    var categoryDatasource : Array<String>?
+    
+    @IBOutlet weak var makeCell: UITableViewCell!
+    @IBOutlet weak var modelCell: UITableViewCell!
+    @IBOutlet weak var notesCell: UITableViewCell!
+    @IBOutlet weak var pickerCell: UITableViewCell!
     
     @IBOutlet weak var make: UITextField!
     @IBOutlet weak var model: UITextField!
     @IBOutlet weak var notes: UITextField!
     @IBOutlet weak var price: UITextField!
+    @IBOutlet weak var picker: UIPickerView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -29,11 +37,38 @@ class ItemModalViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "dismiss:")
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "insertNewObject:")
+        
+        self.categoryDatasource = (UIApplication.sharedApplication().delegate as! AppDelegate).categories
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
+    // MARK - Tableview Datasource
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:     return 3
+        default:    return 0
+        }
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        switch indexPath.row {
+        case 0: return self.makeCell
+        case 1: return self.modelCell
+        case 2: return self.notesCell
+        //case 3: return self.pickerCell
+        default: return UITableViewCell()
+        }
+    }
+
+    // Mark - Coredata
     
     func insertNewObject(sender: AnyObject) {
         if (self.delegate != nil) {
@@ -41,11 +76,14 @@ class ItemModalViewController: UIViewController {
             
             let newManagedObject = NSEntityDescription.insertNewObjectForEntityForName("Item", inManagedObjectContext: context!) as! Item
             
+            //var picked : Int = self.picker.selectedRowInComponent(0)
+            //let array : Array<String> = self.categoryDatasource!
+            
+            //newManagedObject.category   = array[picked]
             newManagedObject.category   = self.category!
             newManagedObject.make       = self.make.text
             newManagedObject.model      = self.model.text
             newManagedObject.note       = self.notes.text
-            newManagedObject.price      = Double(self.price.text.toInt()!)
             
             var error: NSError? = nil
             if !context!.save(&error) {
@@ -62,4 +100,21 @@ class ItemModalViewController: UIViewController {
             self.delegate?.shouldDismissModalViewController(self)
         }
     }
+    
+    // Mark - Picker
+    
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return 9
+    }
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+        let array : Array<String> = self.categoryDatasource!
+        
+        return array[row]
+    }
+    
 }
