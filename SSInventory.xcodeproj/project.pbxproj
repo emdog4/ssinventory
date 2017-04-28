@@ -177,9 +177,11 @@
 					9C1059E31AF5CCA700223C26 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = 9E9LH2J6FZ;
+						LastSwiftMigration = 0830;
 					};
 					9C1059FD1AF5CCA700223C26 = {
 						CreatedOnToolsVersion = 6.3.1;
+						LastSwiftMigration = 0830;
 						TestTargetID = 9C1059E31AF5CCA700223C26;
 					};
 				};
@@ -369,6 +371,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -382,6 +385,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -400,6 +404,7 @@
 				INFOPLIST_FILE = SSInventoryTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SSInventory.app/SSInventory";
 			};
 			name = Debug;
@@ -415,6 +420,7 @@
 				INFOPLIST_FILE = SSInventoryTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SSInventory.app/SSInventory";
 			};
 			name = Release;
@@ -438,6 +444,7 @@
 				9C105A0A1AF5CCA700223C26 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9C105A0B1AF5CCA700223C26 /* Build configuration list for PBXNativeTarget "SSInventoryTests" */ = {
 			isa = XCConfigurationList;
@@ -446,6 +453,7 @@
 				9C105A0D1AF5CCA700223C26 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

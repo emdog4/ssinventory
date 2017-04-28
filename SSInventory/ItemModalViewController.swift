@@ -34,11 +34,11 @@ class ItemModalViewController: UITableViewController, UIPickerViewDataSource, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "dismiss:")
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(ItemModalViewController.dismiss(_:)))
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "insertNewObject:")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(ItemModalViewController.insertNewObject(_:)))
         
-        self.categoryDatasource = (UIApplication.sharedApplication().delegate as! AppDelegate).categories
+        self.categoryDatasource = (UIApplication.shared.delegate as! AppDelegate).categories
     }
     
     override func didReceiveMemoryWarning() {
@@ -47,18 +47,18 @@ class ItemModalViewController: UITableViewController, UIPickerViewDataSource, UI
     
     // MARK - Tableview Datasource
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:     return 3
         default:    return 0
         }
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.row {
         case 0: return self.makeCell
         case 1: return self.modelCell
@@ -70,20 +70,20 @@ class ItemModalViewController: UITableViewController, UIPickerViewDataSource, UI
 
     // Mark - Coredata
     
-    func insertNewObject(sender: AnyObject) {
+    func insertNewObject(_ sender: AnyObject) {
         if (self.delegate != nil) {
             var context = self.delegate?.managedObjectContext
             
-            let newManagedObject = NSEntityDescription.insertNewObjectForEntityForName("Item", inManagedObjectContext: context!) as! Item
+            let newManagedObject = NSEntityDescription.insertNewObject(forEntityName: "Item", into: context!) as! Item
             
             //var picked : Int = self.picker.selectedRowInComponent(0)
             //let array : Array<String> = self.categoryDatasource!
             
             //newManagedObject.category   = array[picked]
             newManagedObject.category   = self.category!
-            newManagedObject.make       = self.make.text
-            newManagedObject.model      = self.model.text
-            newManagedObject.note       = self.notes.text
+            newManagedObject.make       = self.make.text!
+            newManagedObject.model      = self.model.text!
+            newManagedObject.note       = self.notes.text!
             
             var error: NSError? = nil
             if !context!.save(&error) {
@@ -94,7 +94,7 @@ class ItemModalViewController: UITableViewController, UIPickerViewDataSource, UI
         dismiss(sender)
     }
     
-    func dismiss(sender: AnyObject) {
+    func dismiss(_ sender: AnyObject) {
         
         if (self.delegate != nil) {
             self.delegate?.shouldDismissModalViewController(self)
@@ -103,15 +103,15 @@ class ItemModalViewController: UITableViewController, UIPickerViewDataSource, UI
     
     // Mark - Picker
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return 9
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
         let array : Array<String> = self.categoryDatasource!
         
         return array[row]

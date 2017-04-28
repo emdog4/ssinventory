@@ -22,7 +22,7 @@ class DetailViewController: UITableViewController, NSFetchedResultsControllerDel
         }
         
         if self.managedObjectContext == nil {
-            self.managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+            self.managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
         }
     }
     
@@ -31,9 +31,9 @@ class DetailViewController: UITableViewController, NSFetchedResultsControllerDel
         
         self.title = self.category!
         
-        self.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+        self.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "captureInputModally:")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(DetailViewController.captureInputModally(_:)))
     }
     
     
@@ -41,45 +41,45 @@ class DetailViewController: UITableViewController, NSFetchedResultsControllerDel
         super.didReceiveMemoryWarning()
     }
     
-    func captureInputModally(sender: AnyObject) {
+    func captureInputModally(_ sender: AnyObject) {
         
-        var main : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        var itemVC : ItemModalViewController = main.instantiateViewControllerWithIdentifier("ItemModalViewController") as! ItemModalViewController
+        let main : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let itemVC : ItemModalViewController = main.instantiateViewController(withIdentifier: "ItemModalViewController") as! ItemModalViewController
         itemVC.delegate = self
         itemVC.category = self.category!
         
-        var navController : UINavigationController = UINavigationController(rootViewController: itemVC)
-        navController.modalPresentationStyle = .FormSheet
-        navController.modalTransitionStyle = .CoverVertical
+        let navController : UINavigationController = UINavigationController(rootViewController: itemVC)
+        navController.modalPresentationStyle = .formSheet
+        navController.modalTransitionStyle = .coverVertical
         
-        self.presentViewController(navController, animated: true, completion: nil)
+        self.present(navController, animated: true, completion: nil)
     }
     
     // MARK: - Table View
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return self.fetchedResultsController.sections?.count ?? 0
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionInfo = self.fetchedResultsController.sections![section] as! NSFetchedResultsSectionInfo
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let sectionInfo = self.fetchedResultsController.sections![section] 
         return sectionInfo.numberOfObjects
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) 
         self.configureCell(cell, atIndexPath: indexPath)
         return cell
     }
     
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
             let context = self.fetchedResultsController.managedObjectContext
-            context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! Item)
+            context.delete(self.fetchedResultsController.object(at: indexPath) as! Item)
             
             var error: NSError? = nil
             if !context.save(&error) {
@@ -89,20 +89,20 @@ class DetailViewController: UITableViewController, NSFetchedResultsControllerDel
         }
     }
     
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        let item = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Item
+    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
+        let item = self.fetchedResultsController.object(at: indexPath) as! Item
         cell.textLabel!.text =  " ".join([item.make, item.model, item.note])
     }
     
     // MARK: - Fetched results controller
     
-    var fetchedResultsController: NSFetchedResultsController {
+    var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult> {
         if _fetchedResultsController != nil {
             return _fetchedResultsController!
         }
         
-        let fetchRequest = NSFetchRequest()
-        let entity = NSEntityDescription.entityForName("Item", inManagedObjectContext: self.managedObjectContext!)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+        let entity = NSEntityDescription.entity(forEntityName: "Item", in: self.managedObjectContext!)
         fetchRequest.entity = entity
         
         fetchRequest.fetchBatchSize = 50
@@ -132,44 +132,44 @@ class DetailViewController: UITableViewController, NSFetchedResultsControllerDel
     
     var _fetchedResultsController: NSFetchedResultsController? = nil
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.beginUpdates()
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         switch type {
-        case .Insert:
-            self.tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-        case .Delete:
-            self.tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        case .insert:
+            self.tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+        case .delete:
+            self.tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
         default:
             return
         }
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
-        case .Insert:
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-        case .Delete:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-        case .Update:
-            self.configureCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
-        case .Move:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+        case .insert:
+            tableView.insertRows(at: [newIndexPath!], with: .fade)
+        case .delete:
+            tableView.deleteRows(at: [indexPath!], with: .fade)
+        case .update:
+            self.configureCell(tableView.cellForRow(at: indexPath!)!, atIndexPath: indexPath!)
+        case .move:
+            tableView.deleteRows(at: [indexPath!], with: .fade)
+            tableView.insertRows(at: [newIndexPath!], with: .fade)
         default:
             return
         }
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.endUpdates()
     }
     
-    func shouldDismissModalViewController(controller: ItemModalViewController) {
+    func shouldDismissModalViewController(_ controller: ItemModalViewController) {
         self.tableView.reloadData()
-        controller.dismissViewControllerAnimated(true, completion: nil)
+        controller.dismiss(animated: true, completion: nil)
     }
 
 }
